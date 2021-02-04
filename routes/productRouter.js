@@ -32,8 +32,15 @@ router.get('/', (req, res, next) => {
     .catch(error => next(error));
 });
 
-router.get('/:id', (req, res) => {
-  res.render('cart');
+router.get('/:id', (req, res, next) => {
+  let productController = require("../controllers/productController");
+  productController
+    .getById(req.params.id)
+    .then(product => {
+      res.locals.product = product;
+      res.render('single-product')
+    })
+    .catch(error => next(error));
 });
 
 module.exports = router;
