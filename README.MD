@@ -42,3 +42,7 @@ mockaroo.com: Tạo dữ liệu random
     "dialect": "postgres"
   },
 
+======================
+
+git add .
+$ git commit -am 'add database'
