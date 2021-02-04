@@ -14,6 +14,7 @@
 
 
 ======================
+
  npm install -s pg pg-hstore sequelize sequelize-cli
 
  npm install -g sequelize-cli
@@ -28,5 +29,16 @@ lability:boolean,summary:text,description:text
 sequelize db:seed:all
 
 =====================
+
 mockaroo.com: Tạo dữ liệu random
+
+=====================
+
+"development": {
+    "username": "postgres",
+    "password": "123456",
+    "database": "aromadb",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  },
 
