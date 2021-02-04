@@ -19,4 +19,17 @@ controller.getTrendingProducts = () => {
     });
 }
 
+controller.getAll = () => {
+    return new Promise((resolve, reject) => {
+        Product //lay tu bang product va truyen het tat ca cac thuoc tinh
+            .findAll({
+                include: [{model: models.Category}],
+                attributes: ['id', 'name', 'imagepath', 'price']
+            })
+            .then(data => resolve(data)) 
+            .catch(error => reject(new Error(error)));
+            //neu ma lay duoc data thi resolve, nguoc lai thi nem loi ra
+    });
+}
+
 module.exports = controller;

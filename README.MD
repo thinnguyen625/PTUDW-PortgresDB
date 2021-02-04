@@ -46,3 +46,6 @@ mockaroo.com: Tạo dữ liệu random
 
 git add .
 $ git commit -am 'add database'
+git push heroku master
+
+=====================
