@@ -28,4 +28,5 @@ lability:boolean,summary:text,description:text
 sequelize db:seed:all
 
 =====================
-mockaroo.com
+mockaroo.com: Tạo dữ liệu random
+

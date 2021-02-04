@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var indexRouter = require('./routes/indexRouter');
+var usersRouter = require('./routes/productRouter');
 
 var app = express();
 
@@ -22,11 +22,20 @@ let hbs = expressHbs.create({
 })
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
+//Luong xu ly:
+// app.js => routes/..Router.js => controllers/..Controller.js
+// Lop controllers la mot lop doi tuong, cach chung ta truy xuat vao CSDL
+// de thuc hien viec CRUD
+
+//Sau nay muon thay doi database thanh mysql, mongodb thi chi can thay trong
+//controllers la duoc
+
 
 // Define your routes here
-app.get('/', (req, res) => {
-  res.render('index');
-})
+app.use('/', require('./routes/indexRouter'));
+app.use('/products', require('./routes/productRouter'));
+
+
 app.get('/sync', (req, res) => {
   let models = require('./models');
   models.sequelize.sync().then(()=>{
