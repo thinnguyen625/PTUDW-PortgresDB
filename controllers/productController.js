@@ -1,5 +1,6 @@
 let controller = {};
-let models = require('../models') //
+let models = require('../models'); //
+const product = require('../models/product');
 let Product = models.Product;
 
 controller.getTrendingProducts = () => {
@@ -34,12 +35,23 @@ controller.getAll = () => {
 
 controller.getById = (id) => {
     return new Promise((resolve, reject) => {
+        let product;
         Product
             .findOne({
                 where: {id: id},
                 include: [{ model: models.Category}],
             })
-            .then(result => resolve(result))
+            .then(result => {
+                product = result;
+                return models.ProductSpecification.findAll({
+                    where: {productId: id},
+                    include: [{model: models.Specification}]
+                });
+            })
+            .then(productSpecifications => {
+                product.ProductSpecifications = productSpecifications;
+                resolve(product);
+            })
             .catch(error => reject(new Error(error)));
     });
 }
