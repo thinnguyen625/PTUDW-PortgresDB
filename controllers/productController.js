@@ -50,6 +50,32 @@ controller.getById = (id) => {
             })
             .then(productSpecifications => {
                 product.ProductSpecifications = productSpecifications;
+                return models.Comment.findAll({
+                    where: {productId: id, parentCommentId: null},
+                    include:[{model: models.User},
+                        {
+                            model: models.Comment,
+                            as: 'SubComments',
+                            include: [{ model: models.User }]
+                        }
+                    ]
+                })
+                
+            })
+            .then(comments => {
+                product.Comments = comments;
+                return models.Review.findAll({
+                    where: { productId: id},
+                    include: [{model: models.User}]
+                });
+            })
+            .then(reviews => {
+                product.Reviews = reviews;
+                let stars = [];
+                for (let i=1; i<=5; i++){
+                    stars.push(reviews.filter(item => (item.rating == i)).length)
+                }
+                product.stars = stars; //co stars roi thi gan vo cho product
                 resolve(product);
             })
             .catch(error => reject(new Error(error)));
