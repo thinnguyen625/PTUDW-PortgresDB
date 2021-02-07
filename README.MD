@@ -49,3 +49,6 @@ $ git commit -am 'add database'
 git push heroku master
 
 =====================
+
+
+**Part 5 - Building Browse & Filter Functionalities for Online Shopping Web Application**

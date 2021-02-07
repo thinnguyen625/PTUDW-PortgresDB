@@ -20,13 +20,18 @@ controller.getTrendingProducts = () => {
     });
 }
 
-controller.getAll = () => {
+controller.getAll = (query) => {
     return new Promise((resolve, reject) => {
+        let options = {
+            include: [{model: models.Category}],
+            attributes: ['id', 'name', 'imagepath', 'price'],
+            where: {} //them dieu kien where
+        };
+        if(query.category){ //neu ng dung truyen vao category > 0
+            options.where.categoryId = query.category; //them dieu kien categoryId
+        }
         Product //lay tu bang product va truyen het tat ca cac thuoc tinh
-            .findAll({
-                include: [{model: models.Category}],
-                attributes: ['id', 'name', 'imagepath', 'price']
-            })
+            .findAll(options)
             .then(data => resolve(data)) 
             .catch(error => reject(new Error(error)));
             //neu ma lay duoc data thi resolve, nguoc lai thi nem loi ra

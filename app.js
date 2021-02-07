@@ -14,7 +14,8 @@ app.use(express.static(__dirname + '/public'))
 
 // Use view engine
 let expressHbs = require('express-handlebars')
-let helper = require('./controllers/helper')
+let helper = require('./controllers/helper');
+const product = require('./models/product');
 let hbs = expressHbs.create({
   extname: 'hbs',
   defaultLayout: 'layout',
@@ -50,7 +51,7 @@ app.get('/sync', (req, res) => {
 app.get('/:page', (req, res) => {
   let banners = {
     blog: 'Our Blog',
-    category: 'Shop Category',
+    products: 'Shop Category',
     cart: 'Shopping Cart',
   };
   let page = req.params.page;
