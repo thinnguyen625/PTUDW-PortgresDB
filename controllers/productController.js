@@ -2,6 +2,8 @@ let controller = {};
 let models = require('../models'); //
 const product = require('../models/product');
 let Product = models.Product;
+let Sequelize = require('sequelize');
+let Op = Sequelize.Op;
 
 controller.getTrendingProducts = () => {
     return new Promise((resolve, reject) => {
@@ -25,10 +27,25 @@ controller.getAll = (query) => {
         let options = {
             include: [{model: models.Category}],
             attributes: ['id', 'name', 'imagepath', 'price'],
-            where: {} //them dieu kien where
+            where: {
+                price:{
+                    [Op.gte]: query.min,
+                    [Op.lte]: query.max,
+                }
+            } //them dieu kien where
         };
         if(query.category){ //neu ng dung truyen vao category > 0
             options.where.categoryId = query.category; //them dieu kien categoryId
+        }
+        if(query.brand){
+            options.where.brandId = query.brand;
+        }
+        if(query.color){
+            options.include.push({
+                model: models.ProductColor,
+                attributes: [],
+                where: {colorId: query.color}
+            })
         }
         Product //lay tu bang product va truyen het tat ca cac thuoc tinh
             .findAll(options)
