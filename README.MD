@@ -104,3 +104,18 @@ router.get('/', (req, res, next) => {
 ```
 
 ## Part 6 - Building Searching, Sorting and Paging Functionalities for Online Shopping Web Application
+
+ ```
+ "username": "pcdvqmvdmuzaaa",
+    "password": "c1c9f1f3f32d6513986cd706d25e31aee37b3601adfd8a1cf5b36b30b1e3e5eb",
+    "database": "dbics2c920odf5",
+    "host": "ec2-54-162-119-125.compute-1.amazonaws.com",
+    "port": 5432,
+    "dialect": "postgres",
+    "dialectOptions": {
+      "ssl": {
+        "require": true,
+        "rejectUnauthorized": false
+      }
+    }
+```
