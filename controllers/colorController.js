@@ -5,7 +5,7 @@ let Color = models.Color;
 let Sequelize = require('sequelize');
 let Op = Sequelize.Op;
 
-controller.getAll = () => {
+controller.getAll = (query) => {
     return new Promise((resolve, reject) => {
         let options = {
             attributes: ['id', 'name', 'imagepath', 'code'],
@@ -15,7 +15,7 @@ controller.getAll = () => {
                     model: models.Product,
                     attributes: [],
                     where: {
-                        price:{
+                        price: {
                             [Op.gte]: query.min,
                             [Op.lte]: query.max,
                         }

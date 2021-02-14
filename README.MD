@@ -1,5 +1,12 @@
 # PTUDW-PortgresDB
 
+## Part 1 - Building Online Shopping Web Application using NodeJS Express & Handlebars
+
+- `npm init`: Khoi tao file package.js (*luu nhung cau hinh lien quan den project minh lam viec*)
+- `npm install -s express`
+- `node app`
+  
+
 **Database**:
 
 - Categories (id, name, summary, imagepath)
@@ -95,3 +102,5 @@ router.get('/', (req, res, next) => {
   </span></label></li>
 {{/each}}
 ```
+
+## Part 6 - Building Searching, Sorting and Paging Functionalities for Online Shopping Web Application

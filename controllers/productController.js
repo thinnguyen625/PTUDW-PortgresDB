@@ -3,7 +3,7 @@ let models = require('../models'); //
 const product = require('../models/product');
 let Product = models.Product;
 let Sequelize = require('sequelize');
-let Op = Sequelize.Op;
+let Op = Sequelize.Op; 
 
 controller.getTrendingProducts = () => {
     return new Promise((resolve, reject) => {

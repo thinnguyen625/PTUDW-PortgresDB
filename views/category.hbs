@@ -37,8 +37,8 @@
                 <li class="filter-list">
                   <input class="pixel-radio" 
                   type="radio" id="brand{{dataValues.id}}" 
-                  name="brand" onclick="selectParam('brand', {{id}})">
-                  <label for="brand{{id}}">{{dataValues.name}}<span> 
+                  name="brand" onclick="selectParam('brand', {{dataValues.id}})">
+                  <label for="brand{{dataValues.id}}">{{dataValues.name}}<span> 
                   ({{Products.length}})</span></label></li>
                 {{/each}}
               </ul>
@@ -52,8 +52,9 @@
                 <li class="filter-list">
                   <input class="pixel-radio" 
                   type="radio" id="color{{dataValues.id}}" name="color"
-                  onclick="selectParam('brand', {{id}})">
-                  <label for="color{{dataValues.id}}">{{dataValues.name}}<span>  
+                  onclick="selectParam('brand', {{dataValues.id}})">
+                  <label for="color{{dataValues.id}}">
+                    {{dataValues.name}}<span>  
                     
                     ({{ProductColors.length}})</span></label></li>
                
