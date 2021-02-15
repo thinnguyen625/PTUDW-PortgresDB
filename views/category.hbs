@@ -1,4 +1,4 @@
-<script src= "/vendors/nouislider/nouislider.min.js"></script>
+<script src="/vendors/nouislider/nouislider.min.js"></script>
 
 {{> banner}}
 <!-- ================ category section start ================= -->
@@ -13,14 +13,12 @@
               <form action="#">
                 <ul>
                   {{#each categories}}
-                  <li class="filter-list"><input 
-                  class="pixel-radio" type="radio" 
-                  id="category{{dataValues.id}}" name="brand" 
-                  onclick="selectParam('category', {{dataValues.id}})"><label
-                  for="category{{dataValues.id}}" > 
-                  {{dataValues.name}}
-                  <span> ({{Products.length}}) 
-                  </span></label></li>
+                  <li class="filter-list"><input class="pixel-radio" type="radio" id="category{{dataValues.id}}"
+                      name="brand" onclick="selectParam('category', {{dataValues.id}})"><label
+                      for="category{{dataValues.id}}">
+                      {{dataValues.name}}
+                      <span> ({{Products.length}})
+                      </span></label></li>
                   {{/each}}
                 </ul>
               </form>
@@ -35,11 +33,11 @@
               <ul>
                 {{#each brands}}
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                  type="radio" id="brand{{dataValues.id}}" 
-                  name="brand" onclick="selectParam('brand', {{dataValues.id}})">
-                  <label for="brand{{dataValues.id}}">{{dataValues.name}}<span> 
-                  ({{Products.length}})</span></label></li>
+                  <input class="pixel-radio" type="radio" id="brand{{dataValues.id}}" name="brand"
+                    onclick="selectParam('brand', {{dataValues.id}})">
+                  <label for="brand{{dataValues.id}}">{{dataValues.name}}<span>
+                      ({{Products.length}})</span></label>
+                </li>
                 {{/each}}
               </ul>
             </form>
@@ -50,15 +48,14 @@
               <ul>
                 {{#each colors}}
                 <li class="filter-list">
-                  <input class="pixel-radio" 
-                  type="radio" id="color{{dataValues.id}}" name="color"
-                  onclick="selectParam('brand', {{dataValues.id}})">
+                  <input class="pixel-radio" type="radio" id="color{{dataValues.id}}" name="color"
+                    onclick="selectParam('brand', {{dataValues.id}})">
                   <label for="color{{dataValues.id}}">
-                    {{dataValues.name}}<span>  
-                    
-                    ({{ProductColors.length}})</span></label></li>
-               
-               {{/each}}
+                    {{dataValues.name}}<span>
+                    ({{ProductColors.length}})</span></label>
+                </li>
+
+                {{/each}}
               </ul>
             </form>
           </div>
@@ -82,25 +79,27 @@
         <!-- Start Filter Bar -->
         <div class="filter-bar d-flex flex-wrap align-items-center">
           <div class="sorting">
-            <select>
-              <option value="1">Default sorting</option>
-              <option value="1">Default sorting</option>
-              <option value="1">Default sorting</option>
+            <select id="sort" onchange="selectParam('sort', this.value)">
+              <option value="name">Default sorting by name</option>
+              <option value="price">Sorting by price from low to high</option>
+              <option value="overallReview">Sorting by reviews from high to low</option>
             </select>
           </div>
           <div class="sorting mr-auto">
-            <select>
-              <option value="1">Show 12</option>
-              <option value="1">Show 12</option>
-              <option value="1">Show 12</option>
+            <select id="limit" onchange="selectParam('limit', this.value)">
+              <option value="9">Show 9</option>
+              <option value="18">Show 18</option>
+              <option value="36">Show 36</option>
             </select>
           </div>
           <div>
             <div class="input-group filter-bar-search">
-              <input type="text" placeholder="Search">
-              <div class="input-group-append">
-                <button type="button"><i class="ti-search"></i></button>
-              </div>
+              <form action="/products" method="GET">
+                <input type="text" name="search" placeholder="Search">
+                <div class="input-group-append">
+                  <button type="submit"><i class="ti-search"></i></button>
+                </div>
+              </form>
             </div>
           </div>
         </div>
@@ -127,6 +126,11 @@
               </div>
             </div>
             {{/each}}
+          </div>
+          <div class="row justify-content-center">
+            <nav aria-label="Page navigation example" id="pagination">
+              {{{ createPagination pagination paginationClass="pagination"}}}
+            </nav>
           </div>
         </section>
         <!-- End Best Seller -->
@@ -287,23 +291,47 @@
     brand: 0,
     color: 0,
     min: 0,
-    max: 100
+    max: 100,
+    limit: 9,
+    page: 1,
+    sort: 'name',
+    search: '',
+
   };
+
+  //khoi tao tat ca cac param cho urlParams
   for (let key in params) {
-    if(!urlParams.has(key)) {
+    if (!urlParams.has(key)) {
       urlParams.append(key, params[key]);
     }
   }
 
-  for (let key in params) {
-    let control = $(`#${key}${urlParams.get(key)}`);
-    if(control) {
-      $(control).prop('checked', true);
+  $(document).ready(() => {
+    //Thiet lap trang thai cho cac checkbox browse va filter
+    let checkBoxes = ['category', 'brand', 'color'];
+    for (let key in checkBoxes) {
+      let control = $(`#${key}${urlParams.get(key)}`);
+      if (control) {
+        $(control).prop('checked', true);
+      }
     }
-  }
+    //Thiet lap trang thai cho combo box sort va limit
+    $('#sort').val(urlParams.get('sort'));
+    $('#limit').val(urlParams.get('limit'));
+    //Thiet lap trang thai va duong dan href cho cac link cua pagination
+    $('#pagination li').addClass('page-item');
+    $('#pagination li a').addClass('page-link');
+    $('#pagination li a').each((index, item) => {
+      // href = /products?page=2
+      let page = $(item).attr('href').split('=')[1];
+      urlParams.set('page', page);
+      let href = '/products?' + urlParams.toString();
+      $(item).attr('href', href);
+    });
 
-  function selectParam(key, value, reset = false){
-    if(reset) {
+  });
+  function selectParam(key, value, reset = false) {
+    if (reset) {
       for (let key in params) {
         urlParams.set(key, params[key]);
       }

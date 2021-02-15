@@ -34,21 +34,54 @@ controller.getAll = (query) => {
                 }
             } //them dieu kien where
         };
-        if(query.category){ //neu ng dung truyen vao category > 0
+        if(query.category > 0){ //neu ng dung truyen vao category > 0
             options.where.categoryId = query.category; //them dieu kien categoryId
         }
-        if(query.brand){
+        if(query.search != ''){
+            options.where.name = { //them dieu kien name
+                [Op.iLike]: `%${query.search}%` // dung template: co the chua keywork nguoi dung tim kiem
+            };
+        }
+        if(query.brand > 0){
             options.where.brandId = query.brand;
         }
-        if(query.color){
+        if(query.color > 0){
             options.include.push({
                 model: models.ProductColor,
                 attributes: [],
                 where: {colorId: query.color}
             })
         }
+        if(query.limit > 0){
+            options.limit = query.limit;
+            options.offset = query.limit * (query.page - 1);
+        }
+        if(query.sort){
+            switch (query.sort){
+                case 'name': 
+                    options.order = [
+                        ['name', 'ASC']
+                    ];
+                    break;
+                case 'price': 
+                    options.order = [
+                        ['price', 'ASC']
+                    ];
+                    break;
+                case 'overallReview': 
+                    options.order = [
+                        ['overallReview', 'DESC']
+                    ];
+                    break;
+                default: 
+                    options.order = [
+                        ['name', 'ASC']
+                    ];
+                    break;
+                }
+        }
         Product //lay tu bang product va truyen het tat ca cac thuoc tinh
-            .findAll(options)
+            .findAndCountAll(options) //ham nay tra ve {rows, count} de vua co danh sach cac sp va vua co so sp thoa dieu kien 
             .then(data => resolve(data)) 
             .catch(error => reject(new Error(error)));
             //neu ma lay duoc data thi resolve, nguoc lai thi nem loi ra
