@@ -107,3 +107,12 @@ router.get('/', (req, res, next) => {
 
 **Phan trang**
 `npm i -s express-handlebars-paginate`
+
+
+## Part 7 - Building Shopping Cart for Online Shopping Web Application
+
+- Gio hang luu tren express la mot vung nho tren server
+- Co che cua mot session tung nguoi dung la su dung cookie
+- Khi nguoi dung add mot san pham vao cart => can co bodyparser de lay tham so ma nguoi dung truyen len 
+  
+`npm i -s cookie-parser express-session body-parser`

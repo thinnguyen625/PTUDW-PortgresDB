@@ -93,14 +93,14 @@
             </select>
           </div>
           <div>
-            <div class="input-group filter-bar-search">
-              <form action="/products" method="GET">
+            <form action="/products" method="GET">
+              <div class="input-group filter-bar-search">
                 <input type="text" name="search" placeholder="Search">
                 <div class="input-group-append">
                   <button type="submit"><i class="ti-search"></i></button>
                 </div>
-              </form>
-            </div>
+              </div>
+            </form>
           </div>
         </div>
         <!-- End Filter Bar -->
@@ -109,21 +109,7 @@
           <div class="row">
             {{#each products}}
             <div class="col-md-6 col-lg-4">
-              <div class="card text-center card-product">
-                <div class="card-product__img">
-                  <img class="card-img" src="{{dataValues.imagepath}}" alt="">
-                  <ul class="card-product__imgOverlay">
-                    <li><button><i class="ti-search"></i></button></li>
-                    <li><button><i class="ti-shopping-cart"></i></button></li>
-                    <li><button><i class="ti-heart"></i></button></li>
-                  </ul>
-                </div>
-                <div class="card-body">
-                  <p>{{Category.dataValues.name}}</p>
-                  <h4 class="card-product__title"><a href="/products/{{dataValues.id}}">{{dataValues.name}}</a></h4>
-                  <p class="card-product__price">${{dataValues.price}}</p>
-                </div>
-              </div>
+              {{> product}}
             </div>
             {{/each}}
           </div>
@@ -309,7 +295,7 @@
   $(document).ready(() => {
     //Thiet lap trang thai cho cac checkbox browse va filter
     let checkBoxes = ['category', 'brand', 'color'];
-    for (let key in checkBoxes) {
+    for (let key of checkBoxes) { //mang nen dung for for of
       let control = $(`#${key}${urlParams.get(key)}`);
       if (control) {
         $(control).prop('checked', true);

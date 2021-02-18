@@ -1,13 +1,11 @@
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
-
-var indexRouter = require('./routes/indexRouter');
-var usersRouter = require('./routes/productRouter');
+let logger = require('morgan');
 
 var app = express();
+
+
 
 //Set public static folder
 app.use(express.static(__dirname + '/public'))
@@ -26,7 +24,7 @@ let hbs = expressHbs.create({
     createStarList: helper.createStarList,
     createStars: helper.createStars,
     createPagination: paginateHelper.createPagination,
-
+    
   }
 })
 app.engine('hbs', hbs.engine);
@@ -40,10 +38,41 @@ app.set('view engine', 'hbs');
 //controllers la duoc
 
 
+//Body parser
+let bodyparser = require('body-parser')
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: false }));
+
+//Use cookie Parser
+let cookieParser = require('cookie-parser');
+app.use(cookieParser());
+
+//Use Session
+
+let session = require('express-session');
+app.use(session({
+  cookie: { httpOnly: true, maxAge: 30*24*60*60*1000}, //luu toi da 30 ngay
+  secret: 'S3cret',
+  resave: false,
+  saveUninitialized: false
+}));
+
+//Use cart controller
+let Cart = require('./controllers/cartController');
+app.use((req, res, next) => {
+  var cart = new Cart(req.session.cart ? req.session.cart : {});
+  //Neu cart ton tai roi thi tao moi mot cart dua tren phan thong tin cart da luu truoc do
+  //Nguoc lai thi khoi tao cac rong
+  req.session.cart = cart; //luu cart vao memory
+  res.locals.totalQuantity = cart.totalQuantity; //lay ra totalQuantity de hien thi so tren gio hang
+  next();
+})
+
+
 // Define your routes here
 app.use('/', require('./routes/indexRouter'));
 app.use('/products', require('./routes/productRouter'));
-
+app.use('/cart', require('./routes/cartRouter'))
 
 app.get('/sync', (req, res) => {
   let models = require('./models');
