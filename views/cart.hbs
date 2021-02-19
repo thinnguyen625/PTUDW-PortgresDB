@@ -4,7 +4,8 @@
 {{#with cart}}
 <section class="cart_area">
   <div class="container">
-    <div class="cart_inner">
+    <div class="cart_inner" id="cart-body">
+      {{#if items.length}}
       <div class="table-responsive">
         <table class="table">
           <thead>
@@ -148,6 +149,9 @@
           </tbody>
         </table>
       </div>
+      {{else}}
+      <div class="alert alert-info text-center">Your cart is empty!</div>
+      {{/if}}
     </div>
   </div>
 </section>

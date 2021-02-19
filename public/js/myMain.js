@@ -34,7 +34,11 @@ function removeCartItem(id) {
         success: function(result){
             $('#cart-badge').html(result.totalQuantity);
             $('#totalPrice').html('$' + result.totalPrice);
-            $(`#item${id}`).remove();
+            if(result.totalQuantity > 0){
+                $(`#item${id}`).remove();
+            } else {
+                $('#cart-body').html('<div class="alert alert-info text-center">Your cart is empty!</div>');
+            }
         }
         
     })
@@ -44,7 +48,7 @@ function updateCartItem(id, quantity){
     $.ajax({ 
         url: '/cart',
         type: 'PUT' ,
-        data: { id, quantity },
+        data: { id, quantity }, //truyen du lieu
         success: function(result){
             $('#cart-badge').html(result.totalQuantity);
             $('#totalPrice').html('$' + result.totalPrice);
@@ -52,4 +56,19 @@ function updateCartItem(id, quantity){
         }
         
     })
+}
+
+function clearCart() {
+    //de bao dam nguoi dung thuc su mon xoa thi minh se hoi truoc
+    if(confirm('Do you really want to remove all items?')){
+        $.ajax({
+            url: '/cart/all',
+            type: 'DELETE', 
+            //khong truyen du lieu di het
+            success: function(){
+                $('#cart-badge').html(0); //So luong se la 0
+                $('#cart-body').html('<div class="alert alert-info text-center">Your cart is empty!</div>');
+            }
+        })
+    }
 }

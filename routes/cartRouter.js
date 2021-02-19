@@ -37,4 +37,11 @@ router.delete('/', (req, res) => {
     });
 })
 
+//dinh nghia router duong dan la /all
+router.delete('/all', (req, res) => {
+    req.session.cart.empty(); //lay gio hang minh ra va goi ham empty()
+    res.sendStatus(204); //thong bao cap nhat thanh cong
+    res.end();
+})
+
 module.exports = router;
