@@ -1,5 +1,6 @@
 # PTUDW-PortgresDB
-
+Technology: 
+- Server site render
 ## Part 1 - Building Online Shopping Web Application using NodeJS Express & Handlebars
 
 - `npm init`: Khoi tao file package.js (*luu nhung cau hinh lien quan den project minh lam viec*)

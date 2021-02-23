@@ -3,25 +3,28 @@ let router = express.Router();
 
 router.post('/', (req, res, next) => {
     let controller = require('../controllers/commentController')
-    let comment = {
+    let comment = { //Khỏi tạo đối tượng comment có đầy đủ thông tin
         userId: 1,
         productId: req.body.productId,
         message: req.body.message
     }
-    if (!isNaN(req.body.parentCommentId) && (req.body.parentCommentId != '')){
+    // kiemtra parentCommentId của client gửi lên có phải là số và khác rỗng hay ko
+    if (!isNaN(req.body.parentCommentId) && (req.body.parentCommentId != '')){ 
         comment.parentCommentId = req.body.parentCommentId;
     }
     console.log(comment);
     controller
-        .add(commnet)
+        .add(comment)
         .then(data => {
             res.redirect('/products/' + data.productId)
         })
-        .catch(error => next(error));
+        .catch(error => {
+            console.log(error);
+            next(error);
+        });
+});
 
-})
+// lay duoc comment ma nguoi dung gui len
+// neu add duoc thanh cong thi redirect lại đường dẫn trang sản phẩm
 
-//lay duoc comment ma nguoi dung gui len
-//neu add duoc thanh cong thi refresh lai trang web
-
-module.exports = router;
+module.exports = router;                                
