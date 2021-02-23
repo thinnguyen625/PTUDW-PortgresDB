@@ -7,7 +7,7 @@ let Op = Sequelize.Op;
 controller.add = (comment) => {
     return new Promise((resolve,reject) => {
         Comment
-           .create(comment)
+           .create(comment) //truyen vao comment
            .then(data => resolve(data))
            .catch(error => reject(new Error(error)))
     });

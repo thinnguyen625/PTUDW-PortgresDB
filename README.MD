@@ -117,3 +117,70 @@ router.get('/', (req, res, next) => {
 - Khi nguoi dung add mot san pham vao cart => can co bodyparser de lay tham so ma nguoi dung truyen len 
   
 `npm i -s cookie-parser express-session body-parser`
+
+
+## Part 8 - Building Add Comment Functionality for Online Shopping Web Application
+
+**/model/comment.js**
+```
+module.exports = (sequelize, DataTypes) => {
+  class Comment extends Model {
+    static associate(models) {
+      // define association here
+      Comment.belongsTo(models.User, {foreignKey: 'userId'});
+      Comment.belongsTo(models.Product, {foreignKey: 'productId'});
+      Comment.belongsTo(models.Comment, { as: 'Parent', foreignKey:'parentCommentId'});
+      Comment.hasMany(models.Comment, {as : 'SubComments', foreignKey: 'parentCommentId'})
+    }
+  };
+  Comment.init({
+    message: DataTypes.TEXT
+  }
+  return Comment;
+};
+```
+- Mot product thi co nhieu comment
+- Mot conment se co nhung thong tin chinh la 
+  + Message
+  + UserId, productId: de biet ai comment cho san pham nao
+  + parentCommentId
+
+**/controllers/commentController.js**
+```
+controller.add = (comment) => {
+    return new Promise((resolve,reject) => {
+        Comment
+           .create(comment) //truyen vao comment
+           .then(data => resolve(data))
+           .catch(error => reject(new Error(error)))
+    });
+}
+```
+=> Ham add se nhan vao mot doi tuong comment va tra ve noi dung comment
+
+**/routes/commentRouter.js**
+```
+router.post('/', (req, res, next) => {
+    let controller = require('../controllers/commentController')
+    let comment = { //Khỏi tạo đối tượng comment có đầy đủ thông tin
+        userId: 1,
+        productId: req.body.productId,
+        message: req.body.message
+    }
+    // kiemtra parentCommentId của client gửi lên có phải là số và khác rỗng hay ko
+    if (!isNaN(req.body.parentCommentId) && (req.body.parentCommentId != '')){ 
+        comment.parentCommentId = req.body.parentCommentId;
+    }
+    console.log(comment);
+    controller
+        .add(comment)
+        .then(data => {
+            res.redirect('/products/' + data.productId)
+        })
+        .catch(error => {
+            console.log(error);
+            next(error);
+        });
+});
+```
+Thuc hien chuc nang reply comment
