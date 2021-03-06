@@ -184,3 +184,9 @@ router.post('/', (req, res, next) => {
 });
 ```
 Thuc hien chuc nang reply comment
+
+## Part 10 - Building Register and Login Functionalities for Online Shopping Web Application
+
+```npm install -s bcryptjs```
+
+
