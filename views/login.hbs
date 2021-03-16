@@ -32,18 +32,39 @@
 				</div>
 				<div class="col-lg-6">
 					<div class="login_form_inner">
+						<h4 style="text-align:center">Login with Social Media or Manually</h4>
+					<div class="col">
+						<div style="padding: 10px">
+							<a href="#" class="fb btn">
+							<i class="fa fa-facebook fa-fw"></i> Login with Facebook
+						</a>
+						</div>
+						<div style="padding: 10px">
+						<a href="#" class="twitter btn">
+							<i class="fa fa-twitter fa-fw"></i> Login with Twitter
+						</a>
+						</div>
+						<div style="padding: 10px">
+						<a href="#" class="google btn"><i class="fa fa-google fa-fw">
+							</i> Login with Google+
+						</a>
+						</div>
+					</div>
+					<div class="vl">
+						<span class="vl-innertext">or</span>
+					</div>
 						<h3>Log in to enter</h3>
-						<form class="row login_form" action="#/" id="contactForm" >
+						<form class="row login_form" action="/users/login" id="contactForm" method="POST">
 							{{#if message}}
 							<div class="col-md-12 form-group alert {{type}}">
 								<strong>{{message}}</strong>
 							</div>
 							{{/if}}
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Username" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Username'">
+								<input type="email" class="form-control" id="name" name="username" placeholder="Email address" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Email Address'">
 							</div>
 							<div class="col-md-12 form-group">
-								<input type="text" class="form-control" id="name" name="name" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
+								<input type="password" class="form-control" id="password" name="password" placeholder="Password" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Password'">
 							</div>
 							<div class="col-md-12 form-group">
 								<div class="creat_account">

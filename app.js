@@ -65,6 +65,9 @@ app.use((req, res, next) => {
   //Nguoc lai thi khoi tao cac rong
   req.session.cart = cart; //luu cart vao memory
   res.locals.totalQuantity = cart.totalQuantity; //lay ra totalQuantity de hien thi so tren gio hang
+
+  res.locals.username = req.session.user ? req.session.user.username: '';
+  res.locals.isLoggedIn = req.session.user ? true : false;
   next();
 })
 

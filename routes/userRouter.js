@@ -6,6 +6,32 @@ router.get('/login', (req, res) => {
   res.render('login');
 });
 
+router.post('/login', (req, res, next) => {
+  let email = req.body.username;
+  let password = req.body.password;
+  console.log('DONE')
+  userController
+    .getUserByEmail(email)
+    .then(user => {
+      if (user) {
+        if (userController.comparePassword(password, user.password)) {
+          req.session.user = user;
+          res.redirect('/');
+        } else {
+          res.render('login', {
+            message: 'Incorrect Password!',
+            type: 'alert-danger'
+          });
+        }  
+      } else {
+        res.render('login', {
+          message: 'Email does not exists!',
+          type: 'alert-danger'
+        });
+      }
+    });
+});
+
 router.get('/register', (req, res) => {
   res.render('register');
 });
@@ -18,7 +44,7 @@ router.post('/register', (req, res, next) => {
   let keepLoggedIn = (req.body.keepLoggedIn != undefined);
 
   // Kiem tra confirm password va password giong nhau
-  if(password != confirmPassword){
+  if (password != confirmPassword) {
     return res.render('register', {
       message: 'Confirm password does not match!',
       type: 'alert-danger'
@@ -43,11 +69,11 @@ router.post('/register', (req, res, next) => {
       return userController
         .createUser(user)
         .then(user => {
-          if(keepLoggedIn) {
+          if (keepLoggedIn) {
             req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 100;
             req.session.user = user;
             res.redirect('/');
-          }else {
+          } else {
             res.render('login', {
               message: 'You have registered, now please login',
               type: 'alert-primary'
@@ -57,4 +83,13 @@ router.post('/register', (req, res, next) => {
     })
     .catch(error => next(error));
 })
+
+router.get('/logout', (req, res, next) => {
+  req.session.destroy(error => {
+    if(error) {
+      return next(error);
+    }
+    return res.redirect('/users/login');
+  });
+});
 module.exports = router;
