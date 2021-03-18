@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
-
-router.post('/', (req, res, next) => {
+let userController = require('../controllers/userController');
+router.post('/', userController.isLoggedIn, (req, res, next) => {
     let controller = require('../controllers/commentController')
     let comment = { //Khỏi tạo đối tượng comment có đầy đủ thông tin
         userId: 1,

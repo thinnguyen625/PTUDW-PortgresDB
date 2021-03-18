@@ -2,21 +2,29 @@ let express = require('express');
 let router = express.Router();
 let userController = require('../controllers/userController')
 
+
 router.get('/login', (req, res) => {
+  req.session.returnURL = req.query.returnURL;
   res.render('login');
 });
 
 router.post('/login', (req, res, next) => {
   let email = req.body.username;
   let password = req.body.password;
-  console.log('DONE')
+  let keepLoggedIn = (req.body.keepLoggedIn != undefined);
   userController
     .getUserByEmail(email)
     .then(user => {
       if (user) {
         if (userController.comparePassword(password, user.password)) {
+          req.session.cookie.maxAge = keepLoggedIn ? 30 * 24 * 60 * 60 * 100 : null; 
           req.session.user = user;
-          res.redirect('/');
+          if(req.session.returnURL){
+            res.redirect(req.session.returnURL);
+          }
+          else{
+            res.redirect('/');  
+          }
         } else {
           res.render('login', {
             message: 'Incorrect Password!',

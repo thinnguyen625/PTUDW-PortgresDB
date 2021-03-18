@@ -3,6 +3,7 @@ let models = require('../models')
 let User = models.User;
 let bcrypt = require('bcryptjs')
 
+
 controller.getUserByEmail = (email) => {//tim tai khoan email ma nguoi dung truyen vao
     return User.findOne({
         where: {
