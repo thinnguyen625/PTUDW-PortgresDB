@@ -1,6 +1,9 @@
 # PTUDW-PortgresDB
 Technology: 
 - Server site render
+- admin1@gmail.com
+- pass: admin
+- 
 ## Part 1 - Building Online Shopping Web Application using NodeJS Express & Handlebars
 
 - `npm init`: Khoi tao file package.js (*luu nhung cau hinh lien quan den project minh lam viec*)
@@ -188,5 +191,10 @@ Thuc hien chuc nang reply comment
 ## Part 10 - Building Register and Login Functionalities for Online Shopping Web Application
 
 ```npm install -s bcryptjs```
+
+
+
+
+
 
 
