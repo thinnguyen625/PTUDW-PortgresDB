@@ -1,16 +1,23 @@
 # PTUDW-PortgresDB
-Technology: 
+
+### Technical:
 - Server site render
-- admin1@gmail.com
-- pass: admin
-- 
-## Part 1 - Building Online Shopping Web Application using NodeJS Express & Handlebars
+- http://expressjs.com/en/api
+- **Login test deploy:** admin1@gmail.com - pass: admin
+- **Run local:** 
+    ```
+    npm install
+    nodemon
+    localhost:3000
+    ```
+---
+### Part 1 - Building Online Shopping Web Application using NodeJS Express & Handlebars
 
 - `npm init`: Khoi tao file package.js (*luu nhung cau hinh lien quan den project minh lam viec*)
 - `npm install -s express`
 - `node app`
   
-
+### Part 2 - Designing and Developing Postgres Database
 **Database**:
 
 - Categories (id, name, summary, imagepath)
@@ -25,8 +32,6 @@ Technology:
 
 **pgAdmin**
 
-----
-
  - `npm install -s pg pg-hstore sequelize sequelize-cli` <br>
  `npm install -g sequelize-cli`
 
@@ -36,11 +41,9 @@ Technology:
 
  - `sequelize db:seed:all`
 
-----
 
 mockaroo.com: Tạo dữ liệu random
 
-----
 ```
 "development": { 
     "username": "postgres",
@@ -50,16 +53,21 @@ mockaroo.com: Tạo dữ liệu random
     "dialect": "postgres"
   },
 ```
-----
-
-**Deploy code truc tiep len Heroku"**
+**Deploy code truc tiep len Heroku**
 - `git add .`
 - `git commit -am 'add database'`
 - `git push heroku master`
+  
+---
+### Part 3 - Building "View List" Functionality 
+SKIP
 
-----
+---
+### Part 4 - Building "View Details" Functionality
+SKIP
 
-## Part 5 - Building Browse & Filter Functionalities for Online Shopping Web Application
+---
+### Part 5 - Building Browse & Filter Functionalities 
 
 http://localhost:3000/products?category=1&brand=1&color=1&min=0&max50
 
@@ -106,14 +114,30 @@ router.get('/', (req, res, next) => {
   </span></label></li>
 {{/each}}
 ```
+---
+### Part 6 - Building Searching, Sorting and Paging Functionalities 
+xu ly trong /product
 
-## Part 6 - Building Searching, Sorting and Paging Functionalities for Online Shopping Web Application
-
-**Phan trang**
+**Phan trang:** su dung *express-handlebars-paginate*
+ - page: dang hien thi trang nao
+ - limit: so luong product trong 1 page
+ - totalRows: tong cong co bao nhieu page
+  
 `npm i -s express-handlebars-paginate`
 
+---
+### Part 7 - Building Shopping Cart 
 
-## Part 7 - Building Shopping Cart for Online Shopping Web Application
+**Module required:**
+- **cookie-parser**: co che session luu infor users la cookie
+- **express-session**: cart se luu tren express (mot vung nho tren server) 
+- **body-parser**: khi user add item vao cart thi can lay infor ma user truyen len
+- AJAX: call server
+
+
+**Chuc nang:**
+> khi nguoi dung click vao button cart trong shop => so luong item trong gio hang tang len
+> Trong cart: user co the update so luong item can mua
 
 - Gio hang luu tren express la mot vung nho tren server
 - Co che cua mot session tung nguoi dung la su dung cookie
@@ -121,8 +145,8 @@ router.get('/', (req, res, next) => {
   
 `npm i -s cookie-parser express-session body-parser`
 
-
-## Part 8 - Building Add Comment Functionality for Online Shopping Web Application
+---
+### Part 8 - Building Add Comment Functionality 
 
 **/model/comment.js**
 ```
@@ -188,7 +212,35 @@ router.post('/', (req, res, next) => {
 ```
 Thuc hien chuc nang reply comment
 
-## Part 10 - Building Register and Login Functionalities for Online Shopping Web Application
+---
+### Part 9 - Building Review Product Functionality
+Skip
+
+---
+### Part 10 - Building Register and Login Functionalities 
+*(Chuc nang dang nhap, dang xuat va phan quyen)*
+> Models > user(fullname, username(email), password)
+> 
+> 3 lop: userController, userRouter, view
+> 
+> Viec luu account duoc quy dinh boi bien cookie
+>
+**P1: Register:**
+ - kiem tra password nhap lai co matching
+ - kiem tra email da ton tai (exists) hay chua
+ - tinh nang (keep me logged in) cho phep dang nhap ngay sau khi register ma ko can dien form login & khi exit browser -> vo lai brower -> ko can phai login lai
+
+**P2: Login**
+ - kiem tra email da dang ky hay chua neu ko thi thong nao (No email is found)
+ - truong hop ( Incorrect password)
+
+**P3: Phan quyen**
+ - khi user chua login thi ko cho comment, review trong single-product
+
+
+> middleware: Khi co bat cu 1 route nao goi len server, no phai di qua middleware **isLoggedIn**, kiem tra neu nguoi dung co dang nhap (req.session.user co ton tai) thi se cho thu hien tiep con nguoc lai se redirect den trang login va luu lai dia chi url hien tai cua nguoi dung
+
+**bcryptjs:** cho phep hash password => increased security
 
 ```npm install -s bcryptjs```
 

@@ -51,7 +51,7 @@ app.use(cookieParser());
 
 let session = require('express-session');
 app.use(session({
-  cookie: { httpOnly: true, maxAge: 30*24*60*60*1000}, //luu toi da 30 ngay
+  cookie: { httpOnly: true, maxAge: null}, //khi user tat browser thi se cookie se mat: mặc dịnh cookie la null
   secret: 'S3cret',
   resave: false,
   saveUninitialized: false
@@ -66,8 +66,11 @@ app.use((req, res, next) => {
   req.session.cart = cart; //luu cart vao memory
   res.locals.totalQuantity = cart.totalQuantity; //lay ra totalQuantity de hien thi so tren gio hang
 
-  res.locals.username = req.session.user ? req.session.user.username: '';
-  res.locals.isLoggedIn = req.session.user ? true : false;
+
+  //khoi tao bien session giong cart
+  //Ben ngoai nay se kiem tra user có exists hay ko, nếu exists thi coi nhu user da login
+  res.locals.username = req.session.user ? req.session.user.username: '';  
+  res.locals.isLoggedIn = req.session.user ? true : false; //luu trang thai login
   next();
 })
 

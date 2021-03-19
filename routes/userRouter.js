@@ -4,21 +4,21 @@ let userController = require('../controllers/userController')
 
 
 router.get('/login', (req, res) => {
-  req.session.returnURL = req.query.returnURL;
+  req.session.returnURL = req.query.returnURL; //moi lan vao trang login thi co the co returnURL
   res.render('login');
 });
 
 router.post('/login', (req, res, next) => {
   let email = req.body.username;
   let password = req.body.password;
-  let keepLoggedIn = (req.body.keepLoggedIn != undefined);
+  let keepLoggedIn = (req.body.keepLoggedIn != undefined); //doi tuong keepLoggedIn: ko nhan vao checkbox -> undefinded, nguoc lai -> tra ve on
   userController
     .getUserByEmail(email)
-    .then(user => {
-      if (user) {
+    .then(user => { //ham nay se tra ve promise
+      if (user) { //neu nhu co ton tai user
         if (userController.comparePassword(password, user.password)) {
-          req.session.cookie.maxAge = keepLoggedIn ? 30 * 24 * 60 * 60 * 100 : null; 
-          req.session.user = user;
+          req.session.cookie.maxAge = keepLoggedIn ? 30 * 24 * 60 * 60 * 100 : null; //luu 30 ngay, update cookie
+          req.session.user = user; //login successful -> bien user moi ton tai 
           if(req.session.returnURL){
             res.redirect(req.session.returnURL);
           }
@@ -49,26 +49,26 @@ router.post('/register', (req, res, next) => {
   let email = req.body.username;
   let password = req.body.password;
   let confirmPassword = req.body.confirmPassword;
-  let keepLoggedIn = (req.body.keepLoggedIn != undefined);
+  let keepLoggedIn = (req.body.keepLoggedIn != undefined); //doi tuong keepLoggedIn: ko nhan vao checkbox -> undefinded, nguoc lai -> tra ve on
 
-  // Kiem tra confirm password va password giong nhau
+  // 1.Kiem tra confirm password va password giong nhau
   if (password != confirmPassword) {
     return res.render('register', {
       message: 'Confirm password does not match!',
       type: 'alert-danger'
     });
   }
-  // Kiem tra username chua ton tai
+  // 2.Kiem tra username chua ton tai
   userController
     .getUserByEmail(email)
-    .then(user => {
-      if (user) {
+    .then(user => {//ham nay se tra ve promise
+      if (user) { //truong hop user null
         return res.render('register', {
           message: `Email ${email} exists! Please choose another email address`,
           type: 'alert-danger'
         });
       }
-      //tao tai khoan
+  // 3.(kiem tra 2 tren ok) -> tao tai khoan 
       user = {
         fullname,
         username: email,
@@ -79,7 +79,7 @@ router.post('/register', (req, res, next) => {
         .then(user => {
           if (keepLoggedIn) {
             req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 100;
-            req.session.user = user;
+            req.session.user = user; //de dam bao user da login -> use bien session
             res.redirect('/');
           } else {
             res.render('login', {
@@ -93,7 +93,7 @@ router.post('/register', (req, res, next) => {
 })
 
 router.get('/logout', (req, res, next) => {
-  req.session.destroy(error => {
+  req.session.destroy(error => { //khi logout -> xoa bien session
     if(error) {
       return next(error);
     }

@@ -1,10 +1,11 @@
 'use strict';
 
 module.exports = function Cart(oldCart) {
-    this.items = oldCart.items || {};
+    this.items = oldCart.items || {}; // cart chua nhieu items, items la mot doi tuong
     this.totalQuantity = oldCart.totalQuantity || 0;
     this.totalPrice = oldCart.totalPrice || 0;
-    this.address = oldCart.address || {};
+    //chua xu ly
+    this.address = oldCart.address || {}; 
     this.paymentMethod = oldCart.paymentMethod || "COD";
 
     this.getTotalQuantity = () => {
@@ -27,7 +28,7 @@ module.exports = function Cart(oldCart) {
     this.add = (item, id, quantity) => {
         var storedItem = this.items[id];
         if (!storedItem) {
-            this.items[id] = { item: item, quantity: 0, price: 0 };
+            this.items[id] = { item: item, quantity: 0, price: 0 }; //item se luu infor toi product
             storedItem = this.items[id];
         }
         storedItem.item.price = parseFloat(storedItem.item.price);
@@ -74,9 +75,9 @@ module.exports = function Cart(oldCart) {
         return arr;
     };
 
-    this.getCart = function() {
+    this.getCart = function() { 
         var cart = {
-            items: this.generateArray(),
+            items: this.generateArray(), //ham nay giup chuyen object sang array -> su dung trong de show in hbs
             totalQuantity: this.totalQuantity,
             totalPrice: this.totalPrice,
             address: this.address,

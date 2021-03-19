@@ -1,10 +1,11 @@
 let controller = {};
 let models = require('../models')
 let User = models.User;
+// =>export model user de lau du lieu
 let bcrypt = require('bcryptjs')
 
 
-controller.getUserByEmail = (email) => {//tim tai khoan email ma nguoi dung truyen vao
+controller.getUserByEmail = (email) => {//tim tai khoan email ma user truyen vao
     return User.findOne({
         where: {
             username: email //lay ra kiem tra co phai la email hay khong
@@ -14,7 +15,7 @@ controller.getUserByEmail = (email) => {//tim tai khoan email ma nguoi dung truy
 
 controller.createUser = (user) => {//tao tai khoan moi
     var salt = bcrypt.genSaltSync(10);
-    user.password = bcrypt.hashSync(user.password, salt);// truoc khi tao thi chung ta can ma hoa mat khau
+    user.password = bcrypt.hashSync(user.password, salt);//hash: user.password
     return User.create(user);
 }
 
@@ -24,7 +25,7 @@ controller.comparePassword = (password, hash) => {
 
 //middleware: Khi co bat cu 1 route nao goi len server, no phai di qua middleware isLoggedIn, 
 //kiem tra neu nguoi dung co dang nhap (req.session.user co ton tai) thi se cho thu hien tiep
-// con nguoc lai se redirect den trang login va luu lai dia chi url hien tai cua nguoi dung
+//con nguoc lai se redirect den trang login va luu lai dia chi url hien tai cua nguoi dung
 controller.isLoggedIn = (req, res, next) => {
     if (req.session.user) {
         next();
